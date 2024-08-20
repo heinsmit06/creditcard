@@ -7,17 +7,31 @@ import (
 
 func Validate(cardNumbers ...string) {
 	for _, cardNumber := range cardNumbers {
-		if len(cardNumber) >= 13 {
-			// Luhn's Algorithm to validate the card number
-			if luhnsAlgorithm(cardNumber) {
-				fmt.Fprintln(os.Stdout, "OK")
+		if checkCardValidity(cardNumber) {
+			if len(cardNumber) >= 13 && len(cardNumber) <= 16 {
+				// Luhn's Algorithm to validate the card number
+				if luhnsAlgorithm(cardNumber) {
+					fmt.Fprintln(os.Stdout, "OK")
+				} else {
+					fmt.Fprintln(os.Stderr, "INCORRECT")
+				}
 			} else {
-				fmt.Fprintln(os.Stderr, "INCORRECT")
+				fmt.Fprintln(os.Stderr, "Incorrect input")
 			}
 		} else {
-			fmt.Fprintln(os.Stderr, "INCORRECT")
+			fmt.Fprintln(os.Stderr, "Incorrect input")
 		}
 	}
+}
+
+func checkCardValidity(cardNumber string) bool {
+	// to check for cases when input contains something other than numbers
+	for _, unit := range cardNumber {
+		if unit < 48 || unit > 57 {
+			return false
+		}
+	}
+	return true
 }
 
 func luhnsAlgorithm(cardNumber string) bool {
