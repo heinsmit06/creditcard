@@ -5,17 +5,18 @@ import (
 	"os"
 )
 
-func Validate(cardNumber string) {
-	if len(cardNumber) >= 13 {
-		// Luhn's Algorithm to validate the card number
-		if luhnsAlgorithm(cardNumber) {
-			fmt.Fprintln(os.Stdout, "OK")
+func Validate(cardNumbers ...string) {
+	for _, cardNumber := range cardNumbers {
+		if len(cardNumber) >= 13 {
+			// Luhn's Algorithm to validate the card number
+			if luhnsAlgorithm(cardNumber) {
+				fmt.Fprintln(os.Stdout, "OK")
+			} else {
+				fmt.Fprintln(os.Stderr, "INCORRECT")
+			}
 		} else {
-			fmt.Println("\nlen is correct")
 			fmt.Fprintln(os.Stderr, "INCORRECT")
 		}
-	} else {
-		fmt.Fprintln(os.Stderr, "INCORRECT")
 	}
 }
 
@@ -26,17 +27,17 @@ func luhnsAlgorithm(cardNumber string) bool {
 	}
 
 	sliceLength := len(slc) // taking constant length, because append will change the slice's length during execution
+
 	// doubling the first and every other digit
 	for i := 0; i < sliceLength; i = i + 2 {
-
 		slc[i] = slc[i] * 2
+
 		// checking if the doubling resulted in double digit number; adding them separately, if positive
 		if slc[i] >= 10 {
 			firstDigit, secondDigit := slc[i]/10, slc[i]%10
 			slc[i] = firstDigit
 			slc = append(slc, secondDigit)
 		}
-
 	}
 
 	sum := 0
