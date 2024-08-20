@@ -13,3 +13,13 @@ https://gobyexample.com/command-line-arguments
 https://gobyexample.com/command-line-flags
 
 https://gobyexample.com/command-line-subcommands
+
+
+FLAGS
+https://dev.to/cohhei/go-tutorial-1-command-line-arguments-and-file-io-3l9n
+
+
+
+
+CREDIT CARD GENERATOR
+https://medium.com/@ma.juber/mathematics-behind-credit-debit-card-numbering-340bf68d27d2
