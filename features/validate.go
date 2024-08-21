@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func Validate(cardNumbers ...string) {
+func Validate(stdin bool, cardNumbers ...string) {
 	for _, cardNumber := range cardNumbers {
 		if checkCardValidity(cardNumber) {
 			if len(cardNumber) >= 13 && len(cardNumber) <= 16 {
