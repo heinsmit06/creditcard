@@ -10,7 +10,7 @@ func Validate(stdin bool, cardNumbers ...string) {
 		if checkCardValidity(cardNumber) {
 			if len(cardNumber) >= 13 && len(cardNumber) <= 16 {
 				// Luhn's Algorithm to validate the card number
-				if luhnsAlgorithm(cardNumber) {
+				if luhnsAlgorithm(strToNum(cardNumber)) {
 					fmt.Fprintln(os.Stdout, "OK")
 				} else {
 					fmt.Fprintln(os.Stderr, "INCORRECT")
@@ -34,29 +34,25 @@ func checkCardValidity(cardNumber string) bool {
 	return true
 }
 
-func luhnsAlgorithm(cardNumber string) bool {
-	slc := []int{}
-	for _, digit := range cardNumber {
-		slc = append(slc, int(digit-48)) // writing digits in card number to a slice
-	}
-
-	sliceLength := len(slc) // taking constant length, because append will change the slice's length during execution
+func luhnsAlgorithm(cardNumber []int) bool {
+	intSlice := cardNumber
+	sliceLength := len(intSlice) // taking constant length, because append will change the slice's length during execution
 
 	// doubling the first and every other digit
 	for i := 0; i < sliceLength; i = i + 2 {
-		slc[i] = slc[i] * 2
+		intSlice[i] = intSlice[i] * 2
 
 		// checking if the doubling resulted in double digit number; adding them separately, if positive
-		if slc[i] >= 10 {
-			firstDigit, secondDigit := slc[i]/10, slc[i]%10
-			slc[i] = firstDigit
-			slc = append(slc, secondDigit)
+		if intSlice[i] >= 10 {
+			firstDigit, secondDigit := intSlice[i]/10, intSlice[i]%10
+			intSlice[i] = firstDigit
+			intSlice = append(intSlice, secondDigit)
 		}
 	}
 
 	sum := 0
-	for i := 0; i < len(slc); i++ {
-		sum += slc[i]
+	for i := 0; i < len(intSlice); i++ {
+		sum += intSlice[i]
 	}
 
 	// if the final sum is divisible by 10, then the credit card is valid
@@ -65,4 +61,12 @@ func luhnsAlgorithm(cardNumber string) bool {
 	} else {
 		return false
 	}
+}
+
+func strToNum(cardNumber string) []int {
+	slc := []int{}
+	for _, digit := range cardNumber {
+		slc = append(slc, int(digit-48)) // writing digits in card number to a slice
+	}
+	return slc
 }

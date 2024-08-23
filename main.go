@@ -27,8 +27,8 @@ func main() {
 	//issueIssuer := issueCmd.String("issuer", "", "flag to choose a specific issuer")
 
 	// to prevent the "out of range" error when accessing os.Args
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "Expected 'validate' or 'generate' or 'information' or 'issue' subcommands")
+	if len(os.Args) < 3 {
+		fmt.Fprintln(os.Stderr, "Expected 'validate' or 'generate' or 'information' or 'issue' subcommands and/or card number")
 		os.Exit(1)
 	}
 
@@ -47,10 +47,10 @@ func main() {
 	}
 
 	// to check if an argument for a feature is the second argument
-	//if (feature != "validate") && (feature != "generate") && (feature != "information") && (feature != "issue") {
-	//	fmt.Println("The argument for the feature is not in the correct place, it should be right after the path to the bin; or all letters of the feature must be lowercase.")
-	//	os.Exit(1)
-	//}
+	if (feature != "validate") && (feature != "generate") && (feature != "information") && (feature != "issue") {
+		fmt.Println("The argument for the feature is not in the correct place, it should be right after the path to the bin; or all letters of the feature must be lowercase.")
+		os.Exit(1)
+	}
 
 	// after we are sure that the argument is in the correct place and there is only one argument
 	switch feature {
@@ -59,7 +59,7 @@ func main() {
 		features.Validate(*validateStdin, sliceOfArgs[1:]...)
 	case "generate":
 		generateCmd.Parse(os.Args[2:])
-		features.Generate(*generatePick, sliceOfArgs[1:]...)
+		features.Generate(*generatePick, generateCmd.Args())
 		// case "information":
 		//	features.Information
 		// case "issue":
