@@ -82,7 +82,7 @@ func countAsterisksQuantity(cardNumber string) int {
 	return asterisksCount
 }
 
-func checkInputLength(tail []string) {
+func generateCheckInputLength(tail []string) {
 	if len(tail[0]) < 13 || len(tail[0]) > 16 {
 		fmt.Fprintln(os.Stderr, "Invalid input length, must be between 13 and 16 inclusively")
 		os.Exit(1)

@@ -4,7 +4,9 @@ import (
 	"creditcard/features"
 	"flag"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -15,16 +17,16 @@ func main() {
 	generateCmd := flag.NewFlagSet("generate", flag.ExitOnError)
 	generatePick := generateCmd.Bool("pick", false, "flag to randomly pick a single entry from possible variants")
 
-	//informationCmd := flag.NewFlagSet("information", flag.ExitOnError)
-	//informationStdin := informationCmd.Bool("stdin", false, "flag to pass number from stdin")
-	//informationBrands := informationCmd.String("brands", "brands.txt", "flag to store a .txt file with brands' names")
-	//informationIssuers := informationCmd.String("issuers", "issuers.txt", "flag to store a .txt file with issuers' names")
-	//
-	//issueCmd := flag.NewFlagSet("information", flag.ExitOnError)
-	//issueBrands := issueCmd.String("brands", "brands.txt", "flag to store a .txt file with brands' names")
-	//issueIssuers := issueCmd.String("issuers", "issuers.txt", "flag to store a .txt file with issuers' names")
-	//issueBrand := issueCmd.String("brand", "", "flag to choose a specific brand")
-	//issueIssuer := issueCmd.String("issuer", "", "flag to choose a specific issuer")
+	informationCmd := flag.NewFlagSet("information", flag.ExitOnError)
+	informationStdin := informationCmd.Bool("stdin", false, "flag to pass number from stdin")
+	informationBrands := informationCmd.String("brands", "", "flag to store a .txt file with brands' names")
+	informationIssuers := informationCmd.String("issuers", "", "flag to store a .txt file with issuers' names")
+
+	// issueCmd := flag.NewFlagSet("information", flag.ExitOnError)
+	// issueBrands := issueCmd.String("brands", "brands.txt", "flag to store a .txt file with brands' names")
+	// issueIssuers := issueCmd.String("issuers", "issuers.txt", "flag to store a .txt file with issuers' names")
+	// issueBrand := issueCmd.String("brand", "", "flag to choose a specific brand")
+	// issueIssuer := issueCmd.String("issuer", "", "flag to choose a specific issuer")
 
 	// to prevent the "out of range" error when accessing os.Args
 	if len(os.Args) < 3 {
@@ -56,12 +58,35 @@ func main() {
 	switch feature {
 	case "validate":
 		validateCmd.Parse(os.Args[2:])
-		features.Validate(*validateStdin, sliceOfArgs[1:]...)
+		if *validateStdin {
+			bytes, err := io.ReadAll(os.Stdin)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "Error reading from stdin:", err)
+				os.Exit(1)
+			}
+			input := string(bytes)
+			cardNumbers := strings.Fields(input)
+			features.Validate(*validateStdin, cardNumbers)
+		} else {
+			features.Validate(*validateStdin, validateCmd.Args())
+		}
 	case "generate":
 		generateCmd.Parse(os.Args[2:])
 		features.Generate(*generatePick, generateCmd.Args())
-		// case "information":
-		//	features.Information
+	case "information":
+		informationCmd.Parse(os.Args[2:])
+		if *informationStdin {
+			bytes, err := io.ReadAll(os.Stdin)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "Error reading from stdin:", err)
+				os.Exit(1)
+			}
+			input := string(bytes)
+			cardNumbers := strings.Fields(input)
+			features.Information(*informationStdin, *informationBrands, *informationIssuers, cardNumbers)
+		} else {
+			features.Information(*informationStdin, *informationBrands, *informationIssuers, informationCmd.Args())
+		}
 		// case "issue":
 		//	features.Issue
 	}

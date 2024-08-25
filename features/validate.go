@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-func Validate(stdin bool, cardNumbers ...string) {
+func Validate(stdin bool, cardNumbers []string) {
 	fmt.Println(" stdin:", stdin)
-	fmt.Println(" tail:", sliceOfArgs)
+	fmt.Println(" tail:", cardNumbers)
 
 	for _, cardNumber := range cardNumbers {
 		if checkCardValidity(cardNumber) {

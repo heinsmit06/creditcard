@@ -16,7 +16,7 @@ func Generate(pick bool, sliceOfArgs []string) {
 	checkInputValidity(sliceOfArgs)
 	checkAsterisksQuantity(sliceOfArgs)
 	checkAsterisksPlacement(sliceOfArgs)
-	checkInputLength(sliceOfArgs)
+	generateCheckInputLength(sliceOfArgs)
 	generateNums(pick, sliceOfArgs[0])
 }
 
