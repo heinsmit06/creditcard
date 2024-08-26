@@ -28,3 +28,10 @@ func check(e error) {
 		os.Exit(1)
 	}
 }
+
+func checkEmptyInput(brand, issuer string) {
+	if brand == "" || issuer == "" {
+		fmt.Fprintln(os.Stderr, "Please enter brand and/or issuer names")
+		os.Exit(1)
+	}
+}

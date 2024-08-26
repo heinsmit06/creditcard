@@ -22,11 +22,11 @@ func main() {
 	informationBrands := informationCmd.String("brands", "", "flag to store a .txt file with brands' names")
 	informationIssuers := informationCmd.String("issuers", "", "flag to store a .txt file with issuers' names")
 
-	// issueCmd := flag.NewFlagSet("information", flag.ExitOnError)
-	// issueBrands := issueCmd.String("brands", "brands.txt", "flag to store a .txt file with brands' names")
-	// issueIssuers := issueCmd.String("issuers", "issuers.txt", "flag to store a .txt file with issuers' names")
-	// issueBrand := issueCmd.String("brand", "", "flag to choose a specific brand")
-	// issueIssuer := issueCmd.String("issuer", "", "flag to choose a specific issuer")
+	issueCmd := flag.NewFlagSet("information", flag.ExitOnError)
+	issueBrands := issueCmd.String("brands", "", "flag to store a .txt filename with brands' names")
+	issueIssuers := issueCmd.String("issuers", "", "flag to store a .txt filename with issuers' names")
+	issueBrand := issueCmd.String("brand", "", "flag to choose a specific brand")
+	issueIssuer := issueCmd.String("issuer", "", "flag to choose a specific issuer")
 
 	// to prevent the "out of range" error when accessing os.Args
 	if len(os.Args) < 3 {
@@ -87,7 +87,8 @@ func main() {
 		} else {
 			features.Information(*informationStdin, *informationBrands, *informationIssuers, informationCmd.Args())
 		}
-		// case "issue":
-		//	features.Issue
+	case "issue":
+		issueCmd.Parse(os.Args[2:])
+		features.Issue(*issueBrands, *issueIssuers, *issueBrand, *issueIssuer, issueCmd.Args())
 	}
 }
