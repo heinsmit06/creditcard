@@ -32,7 +32,15 @@ func Issue(issueBrands, issueIssuers, issueBrand, issueIssuer string, tail []str
 	cardBrands := strings.Split(string(fileContentBrands), "\n")
 	cardIssuers := strings.Split(string(fileContentIssuers), "\n")
 	issuerNumber := findCardIssuerNumber(cardIssuers, issueIssuer) // firstly I need to pass the issuer number to check for compatability
+	if issuerNumber == "0" {
+		fmt.Fprintln(os.Stderr, "There is no such issuer")
+		os.Exit(1)
+	}
 	brandNumber := findCardBrandNumber(cardBrands, issueBrand, issuerNumber)
+	if brandNumber == "0" {
+		fmt.Fprintln(os.Stderr, "There is no such card combination")
+		os.Exit(1)
+	}
 
 	fmt.Println(brandNumber)
 	fmt.Println(issuerNumber)
@@ -66,11 +74,11 @@ func findCardBrandNumber(cardBrands []string, issueBrand, issuerNumber string) s
 			os.Exit(1)
 		}
 
-		if splittedCardBrand[1] == issuerNumber[:len(splittedCardBrand[1])] {
+		if (splittedCardBrand[0] == strings.ToUpper(issueBrand)) && (splittedCardBrand[1] == issuerNumber[:len(splittedCardBrand[1])]) {
 			return splittedCardBrand[1]
 		}
 	}
-	return ""
+	return "0"
 }
 
 func findCardIssuerNumber(cardIssuers []string, issueIssuer string) string {
@@ -86,7 +94,7 @@ func findCardIssuerNumber(cardIssuers []string, issueIssuer string) string {
 			os.Exit(1)
 		}
 
-		if splittedCardIssuer[0] == issueIssuer {
+		if splittedCardIssuer[0] == strings.ToUpper(issueIssuer) {
 			return splittedCardIssuer[1]
 		}
 	}
