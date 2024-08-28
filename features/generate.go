@@ -9,8 +9,8 @@ import (
 )
 
 func Generate(pick bool, sliceOfArgs []string) {
-	fmt.Println(" pick:", pick)
-	fmt.Println(" tail:", sliceOfArgs)
+	// fmt.Println(" pick:", pick)
+	// fmt.Println(" tail:", sliceOfArgs)
 
 	checkTailLength(sliceOfArgs)
 	checkInputValidity(sliceOfArgs)

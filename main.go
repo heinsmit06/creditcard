@@ -22,7 +22,7 @@ func main() {
 	informationBrands := informationCmd.String("brands", "", "flag to store a .txt file with brands' names")
 	informationIssuers := informationCmd.String("issuers", "", "flag to store a .txt file with issuers' names")
 
-	issueCmd := flag.NewFlagSet("information", flag.ExitOnError)
+	issueCmd := flag.NewFlagSet("issue", flag.ExitOnError)
 	issueBrands := issueCmd.String("brands", "", "flag to store a .txt filename with brands' names")
 	issueIssuers := issueCmd.String("issuers", "", "flag to store a .txt filename with issuers' names")
 	issueBrand := issueCmd.String("brand", "", "flag to choose a specific brand")

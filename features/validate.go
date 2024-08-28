@@ -9,6 +9,11 @@ func Validate(stdin bool, cardNumbers []string) {
 	fmt.Println(" stdin:", stdin)
 	fmt.Println(" tail:", cardNumbers)
 
+	if len(cardNumbers) == 0 {
+		fmt.Fprintln(os.Stderr, "No input")
+		os.Exit(1)
+	}
+
 	for _, cardNumber := range cardNumbers {
 		if checkCardValidity(cardNumber) {
 			if len(cardNumber) >= 13 && len(cardNumber) <= 16 {

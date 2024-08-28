@@ -31,6 +31,10 @@ func Issue(issueBrands, issueIssuers, issueBrand, issueIssuer string, tail []str
 
 	cardBrands := strings.Split(string(fileContentBrands), "\n")
 	cardIssuers := strings.Split(string(fileContentIssuers), "\n")
+	//for i := 0; i < len(cardIssuers); i++ {
+	//	fmt.Print(i)
+	//	fmt.Println(". " + cardIssuers[i])
+	//}
 	issuerNumber := findCardIssuerNumber(cardIssuers, issueIssuer) // firstly I need to pass the issuer number to check for compatability
 	if issuerNumber == "0" {
 		fmt.Fprintln(os.Stderr, "There is no such issuer")
@@ -94,7 +98,7 @@ func findCardIssuerNumber(cardIssuers []string, issueIssuer string) string {
 			os.Exit(1)
 		}
 
-		if splittedCardIssuer[0] == strings.ToUpper(issueIssuer) {
+		if strings.ToUpper(splittedCardIssuer[0]) == strings.ToUpper(issueIssuer) {
 			return splittedCardIssuer[1]
 		}
 	}
